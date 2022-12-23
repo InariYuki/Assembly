@@ -11,7 +11,6 @@ code segment
 		mov si , 0
 		mov dh , 8 ;第8行
 		mov dl , 3 ;第3列
-		mov cl , 00000010b ;Brgbirgb
 		mov ax , 0b800h
 		mov es , ax
 		call show_str
@@ -26,6 +25,23 @@ code segment
 		mul dl
 		add bx , ax
 		mov di , bx
+		mov bl , 00000010b ;Brgbirgb
+		mov cx , 20
+	loop1:
+		mov al , ds:[si]
+		mov es:[di] , al
+		mov es:[di + 1] , bl
+		push cx
+		mov cl , al
+		mov ch , 0
+		jcxz ed
+		pop cx
+		inc si
+		add di , 2
+		loop loop1
+	ed:
+		pop cx
+		ret
 		
 code ends
 end start
